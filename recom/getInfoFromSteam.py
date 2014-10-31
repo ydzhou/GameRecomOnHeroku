@@ -64,6 +64,7 @@ def get_game_info(app_ids):
     for app_id in app_ids:
         app_id = str(app_id)
         url += (app_id + ',')
+    url = url[:-1]
     req = urllib2.Request(url)
     response = urllib2.urlopen(req)
     the_page = response.read() 
