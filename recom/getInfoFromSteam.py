@@ -63,7 +63,7 @@ def get_game_details(app_id):
 
 def get_game_info(app_ids):
     #return [{'ap_id':'570', 'name':'dota', 'descrip':'dafasf', 'img':'', 'score':'0'}]
-    #url = 'http://store.steampowered.com/api/appdetails/?appids=' + str(app_ids[0])
+    url = 'http://store.steampowered.com/api/appdetails/?appids='
     for app_id in app_ids:
         app_id = str(app_id)
         url += (app_id + ',')
