@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<!--
+	Tessellate by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'recom/css/skel.css' %}" />
+<link rel="stylesheet" href="{% static 'recom/css/style.css' %}" />
+<link rel="stylesheet" href="{% static 'recom/css/style-wide.css' %}" />
+
+<html>
+	<head>
+		<title>Games You are Missing</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="A new way to explore land of surprise on Steam" />
+		<meta name="keywords" content="game recommendation, steampowered, trending games, recommender" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/jquery.scrolly.min.js' %}"></script>
+		<script src="{% static 'js/skel.min.js' %}"></script>
+		<script src="{% static 'js/init.js' %}"></script>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- Header -->
+			<section id="header" class="dark">
+				<header>
+					<h1>A Missing Game Recommender for Steam Users</h1>
+					<p>Recommending games your friends on steam are falling love with, while you are missing</a></p>
+				</header>
+			</section>
+			
+		<!-- First -->
+			<section id="first" class="main">
+				{% block steamID %}
+				{% endblock %}
+				{% block submit %}
+				{% endblock %}
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="https://github.com/ydzhou" class="icon fa-github"><span class="label">GitHub</span></a></li>
+				</ul>
+				<div class="copyright">
+					<ul class="menu">
+						<li>&copy; Y.Zhou All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a> and Y.Zhou </li>
+					</ul>
+				</div>
+			</section>
+
+	</body>
+</html>

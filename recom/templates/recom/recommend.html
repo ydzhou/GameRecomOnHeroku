@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<!--
+	Tessellate by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'recom/css/skel.css' %}" />
+<link rel="stylesheet" href="{% static 'recom/css/style.css' %}" />
+<link rel="stylesheet" href="{% static 'recom/css/style-wide.css' %}" />
+
+<html>
+	<head>
+		<title>Games You are Missing</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="A new way to explore land of surprise on Steam" />
+		<meta name="keywords" content="game recommendation, steampowered, trending games, recommender" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/jquery.scrolly.min.js' %}"></script>
+		<script src="{% static 'js/skel.min.js' %}"></script>
+		<script src="{% static 'js/init.js' %}"></script>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- First -->
+		<section id="first" class="main">
+			<header>
+				<div class="container">
+					<h2>Games you are missing, yet you friends cannot stop playing</h2>
+				</div>
+			</header>
+				{% for app in recom_apps %}
+				<div class="content dark">
+				<div class="container">
+					<div class="row half">
+							<div class="8u">
+								<section>
+								<h3>{{ app.name }}</h3>
+								</section>
+								{{ app.descrip }}
+							</div>
+				    		<div class="4u">
+								<a href={{ app.url }} class="button scrolly">Check it on Steam</a>
+								<p>METACRITIC SCORE: {{ app.score }}</p>
+				            	<a href = {{ app.url }} class="image fit"><img src={{ app.img }} alt="" /></a>
+				        	</div>
+					</div>
+				</div>
+				</div>
+				{% endfor %}
+		</section>
+
+		<!-- Footer -->
+		<a href="{% url 'recom:recompage' %}" class="button scrolly">Back to Home</a>
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon fa-github"><span class="label">GitHub</span></a></li>
+				</ul>
+				<div class="copyright">
+					<ul class="menu">
+						<li>&copy; Y.Zhou All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</section>
+
+	</body>
+</html>
