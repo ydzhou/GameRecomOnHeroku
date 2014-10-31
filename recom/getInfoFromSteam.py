@@ -59,10 +59,10 @@ def get_game_details(app_id):
     return res[app_id]['data']['genres']
 
 # retrieve game info related to title, content, price, and so on        
-def get_game_info(app_ids):
     
 
-def get_game_info2(app_ids):
+def get_game_info(app_ids):
+    return [{'ap_id':'570', 'name':'dota', 'descrip':'dafasf', 'img':'', 'score':'0'}]
     url = 'http://store.steampowered.com/api/appdetails/?appids='
     for app_id in app_ids:
         app_id = str(app_id)
