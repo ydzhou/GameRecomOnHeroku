@@ -60,6 +60,9 @@ def get_game_details(app_id):
 
 # retrieve game info related to title, content, price, and so on        
 def get_game_info(app_ids):
+    
+
+def get_game_info2(app_ids):
     url = 'http://store.steampowered.com/api/appdetails/?appids='
     for app_id in app_ids:
         app_id = str(app_id)
