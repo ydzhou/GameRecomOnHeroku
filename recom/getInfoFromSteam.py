@@ -63,21 +63,17 @@ def get_game_details(app_id):
 
 def get_game_info(app_ids):
     #return [{'ap_id':'570', 'name':'dota', 'descrip':'dafasf', 'img':'', 'score':'0'}]
-    url = 'http://store.steampowered.com/api/appdetails/?appids='
-    for app_id in app_ids:
-        app_id = str(app_id)
-        url += (app_id + ',')
-    url = url[:-1]
-    req = urllib2.Request(url)
-    response = urllib2.urlopen(req)
-    the_page = response.read() 
-    res = json.loads(the_page)
-    #print res
+    base_url = 'http://store.steampowered.com/api/appdetails/?appids='
     apps_info = []
     for app_id in app_ids:
         app_id = str(app_id)
+        url = base_url + app_id
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        the_page = response.read() 
+        res = json.loads(the_page)
+        #print res
         r = res[app_id]
-        print app_id
         if r['success'] == False:
             app_info.append(None)
             continue
