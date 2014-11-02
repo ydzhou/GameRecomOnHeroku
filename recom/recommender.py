@@ -31,7 +31,7 @@ def generate_recommended_game_info(steam_id):
             json.dump([True, recommended_app_info], f)
     except:
         with open(filename, 'w') as f:
-            json.dump([False, recommended_app_info], f)
+            json.dump([False, None], f)
     
 def get_recommended_game_info():
     filename = "recom_app_info.json"
@@ -69,7 +69,7 @@ def recommend_games(steam_id):
 
     owned_apps = G.get_all_games(steam_id)
     tstart = datetime.datetime.now()
-    trending_apps = get_trending_games_played_by_friends(steam_id, 20)
+    trending_apps = get_trending_games_played_by_friends(steam_id, 10)
     print datetime.datetime.now() - tstart
     
     if trending_apps == None:
@@ -98,7 +98,7 @@ def recommend_games(steam_id):
             print 'app yp: ', yp
             app_predict.append([app_id, yp])
             if yp == 1:
-                if len(recom_apps)>=10:
+                if len(recom_apps)>=2:
                     return recom_apps
                 if app_id not in recom_apps:
                     recom_apps.append(app_id)
@@ -107,7 +107,7 @@ def recommend_games(steam_id):
     recom_apps = []
     i = 0
     for app in app_predict:
-        if (i>=10): 
+        if (i>=2): 
             break
         else:
             i += 1
