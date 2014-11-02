@@ -22,16 +22,16 @@ def generate_recommended_game_info_threaded(steam_id):
 
 def generate_recommended_game_info(steam_id):
     filename = "recom_app_info.json"
-    try:
-        recommended_app_ids = recommend_games(steam_id)
+    #try:
+    recommended_app_ids = recommend_games(steam_id)
         #tstart = datetime.datetime.now()
-        recommended_app_info = G.get_app_info_database_based(recommended_app_ids)
+    recommended_app_info = G.get_app_info_database_based(recommended_app_ids)
         #print datetime.datetime.now() - tstart
-        with open(filename, 'w') as f:
-            json.dump([True, recommended_app_info], f)
-    except:
-        with open(filename, 'w') as f:
-            json.dump([False, None], f)
+    with open(filename, 'w') as f:
+        json.dump([True, recommended_app_info], f)
+    #except:
+    #    with open(filename, 'w') as f:
+    #        json.dump([False, None], f)
     
 def get_recommended_game_info():
     filename = "recom_app_info.json"
