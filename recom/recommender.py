@@ -5,19 +5,45 @@ from operator import itemgetter
 import generateUserInfo as G
 import getInfoFromSteam
 import math
+import threading
+import datetime
+import os
+import json
 
 my_steam_id = 76561198028487943
 #my_steam_id = 76561198060149220
 # HarderQ 76561198039618528
 # zjn 76561198028487943
 
-def get_recommended_games(steam_id):
+def generate_recommended_game_info_threaded(steam_id):
+    t_recom = threading.Thread(target=generate_recommended_game_info, args=(steam_id,))
+    t_recom.setDaemon(True)
+    t_recom.start()
+
+def generate_recommended_game_info(steam_id):
+    filename = "recom_app_info.json"
     try:
         recommended_app_ids = recommend_games(steam_id)
+        #tstart = datetime.datetime.now()
+        recommended_app_info = G.get_app_info_database_based(recommended_app_ids)
+        #print datetime.datetime.now() - tstart
+        with open(filename, 'w') as f:
+            json.dump([True, recommended_app_info], f)
     except:
-        return []
-    recommended_app_info = getInfoFromSteam.get_game_info(recommended_app_ids)
-    return recommended_app_info
+        with open(filename, 'w') as f:
+            json.dump([False, recommended_app_info], f)
+    
+def get_recommended_game_info():
+    filename = "recom_app_info.json"
+    if not os.path.isfile(filename):
+        return [0, None]
+    with open(filename, 'r') as f:
+        res = json.loads(f.read())
+    os.remove(filename)
+    success = res[0]
+    if success == False:
+        return [-1, None]
+    return [1, res[1]]
     
 def recommend_games(steam_id):
     recom_apps = []
@@ -42,13 +68,15 @@ def recommend_games(steam_id):
     #print err/11
 
     owned_apps = G.get_all_games(steam_id)
-    trending_apps = get_trending_games_played_by_friends(steam_id, 10)
+    tstart = datetime.datetime.now()
+    trending_apps = get_trending_games_played_by_friends(steam_id, 20)
+    print datetime.datetime.now() - tstart
     
     if trending_apps == None:
         return recom_apps # None
     
     app_predict = []
-
+    tstart = datetime.datetime.now()
     for app_id in trending_apps:
         if app_id in owned_apps:
             continue
@@ -70,15 +98,16 @@ def recommend_games(steam_id):
             print 'app yp: ', yp
             app_predict.append([app_id, yp])
             if yp == 1:
-                if len(recom_apps)>=3:
+                if len(recom_apps)>=10:
                     return recom_apps
                 if app_id not in recom_apps:
                     recom_apps.append(app_id)
+    print datetime.datetime.now() - tstart
     app_predict.sort(key=itemgetter(1), reverse=True)
     recom_apps = []
     i = 0
     for app in app_predict:
-        if (i>=3): 
+        if (i>=10): 
             break
         else:
             i += 1
@@ -216,7 +245,8 @@ def bitvecToList(bitvec, n):
 
 # Test Purpose
 if __name__=="__main__":
-    print get_recommended_games(my_steam_id)
+    generate_recommended_game_info_threaded(my_steam_id)
+    print get_recommended_game_info()
     #get_trending_games_played_by_friends(my_steam_id, 40)
     #print recommend_games(my_steam_id)
     #print get_trending_games_played_by_friends(my_steam_id, 5)
