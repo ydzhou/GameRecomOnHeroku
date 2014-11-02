@@ -75,16 +75,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Parse database configuration from $DATABASE_URL
-import dj_database_url
+#import dj_database_url
 #DATABASES['default'] =  dj_database_url.config()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-        'NAME': 'dbi4st85tb5vq7',                     
-        'USER': 'rqnufqhihtwemh',
-        'PASSWORD': 'CTjWLR4d_po6kqgeZ3766Ug6Zx',
-        'HOST': 'ec2-54-225-156-230.compute-1.amazonaws.com',
+        'NAME': 'd6f35h0pv5jeeu',                     
+        'USER': 'gtintnfvhjqlry',
+        'PASSWORD': 'j1tr4c2Cm4y5ZfLLZM0RSA6uWv',
+        'HOST': 'ec2-54-83-9-127.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
