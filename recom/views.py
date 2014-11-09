@@ -3,11 +3,6 @@ from recom.models import UserSteamIDForm
 import recommender as Recom
 import getInfoFromSteam as Info
 
-from rq import Queue
-from worker import conn
-
-q = Queue(connection=conn)
-
 def recompage(request):
     if request.method == 'GET':
         return render(request, 'recom/steamID.html')
@@ -20,10 +15,7 @@ def submit(request):
             user_steamid = posted_data['steamID']
             if len(user_steamid)!=17 or user_steamid.isdigit() == False:
                 return render(request, 'recom/submit.html', {'success': False})
-            #Recom.generate_recommended_game_info_threaded(user_steamid)
-            
-            q.enqueue(generate_recommended_game_info, user_steamid);
-            
+            Recom.generate_recommended_game_info_threaded(user_steamid)
             return render(request, 'recom/submit.html', {'success': True})
         return render(request, 'recom/submit.html', {'success': False})
         

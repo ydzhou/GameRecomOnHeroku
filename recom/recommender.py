@@ -9,48 +9,72 @@ import threading
 import datetime
 import os
 import json
+from recom.models import User
 
 my_steam_id = 76561198028487943
 #my_steam_id = 76561198060149220
 # HarderQ 76561198039618528
 # zjn 76561198028487943
+thread_count = 0
 
 def generate_recommended_game_info_threaded(steam_id):
     t_recom = threading.Thread(target=generate_recommended_game_info, args=(steam_id,))
     t_recom.setDaemon(True)
     t_recom.start()
+    global thread_count
+    thread_count = threading.active_count()
 
 def generate_recommended_game_info(steam_id):
+    try:
+        user_in_db = User.objects.get(steam_id__exact=steam_id)
+    except:
+        new_user = User(
+            steam_id=steam_id,
+            visited=0,
+            #last_update=datetime.datetime.now()
+        )
+        new_user.save()
+    print "generate recommended games\n"
     filename = "recom_app_info.json"
     #try:
+    print "recommending app..."
     recommended_app_ids = recommend_games(steam_id)
-        #tstart = datetime.datetime.now()
     recommended_app_info = G.get_app_info_database_based(recommended_app_ids)
-        #print datetime.datetime.now() - tstart
+    print "DONE\n"
+    print recommended_app_ids
     with open(filename, 'w') as f:
         json.dump([True, recommended_app_info], f)
     #except:
-    #    with open(filename, 'w') as f:
-    #        json.dump([False, None], f)
+     #   print "ERROR: Failed to generate recommended game info\n"
+     #   with open(filename, 'w') as f:
+     #       json.dump([False, None], f)
     
 def get_recommended_game_info():
-    filename = "recom_app_info.json"
-    if not os.path.isfile(filename):
+    if thread_count == threading.active_count():
+        print threading.active_count()
         return [0, None]
-    with open(filename, 'r') as f:
-        res = json.loads(f.read())
-    os.remove(filename)
-    success = res[0]
-    if success == False:
+    try:
+        with open(filename, 'r') as f:
+            res = json.loads(f.read())
+        os.remove(filename)
+        success = res[0]
+        if success == False:
+            print "ERROR: Un-succeed to get recommended games\n"
+            return [-1, None]
+        print "DONE: Get recommended games\n"
+        return [1, res[1]]
+    except:
+        print "ERROR: Failed to get recommended games\n"
         return [-1, None]
-    return [1, res[1]]
     
 def recommend_games(steam_id):
+    
     recom_apps = []
     
     [xt, yt] = generate_IR_training_data(steam_id)
     
     if xt == None or yt == None:
+        print "ERROR: Failed to generate IR training data\n"
         return recom_apps
     
     #clf = svm.SVR()
@@ -68,11 +92,15 @@ def recommend_games(steam_id):
     #print err/11
 
     owned_apps = G.get_all_games(steam_id)
+    if owned_apps == None:
+        print "WARNING: User ownes 0 games\n"
+        return recom_apps
     tstart = datetime.datetime.now()
-    trending_apps = get_trending_games_played_by_friends(steam_id, 10)
+    trending_apps = get_trending_games_played_by_friends(steam_id, 20)
     print datetime.datetime.now() - tstart
     
     if trending_apps == None:
+        print "WARNING: No trending apps available\n"
         return recom_apps # None
     
     app_predict = []
@@ -80,7 +108,7 @@ def recommend_games(steam_id):
     for app_id in trending_apps:
         if app_id in owned_apps:
             continue
-        app_details = G.get_app_details(app_id)
+        app_details = G.get_app_details_database_based(app_id)
         if app_details == None: continue
         shared_genres = 0
         xp = []
@@ -98,7 +126,7 @@ def recommend_games(steam_id):
             print 'app yp: ', yp
             app_predict.append([app_id, yp])
             if yp == 1:
-                if len(recom_apps)>=2:
+                if len(recom_apps)>=3:
                     return recom_apps
                 if app_id not in recom_apps:
                     recom_apps.append(app_id)
@@ -107,15 +135,16 @@ def recommend_games(steam_id):
     recom_apps = []
     i = 0
     for app in app_predict:
-        if (i>=2): 
+        if (i>=3): 
             break
         else:
             i += 1
         recom_apps.append(app[0])
+    print "DONE: Recommending Apps DONE\n"
     return recom_apps
     
 def get_trending_games_played_by_friends(steam_id, num_of_friend):
-    friends = G.get_friends(steam_id)
+    friends = G.get_friends_database_based(steam_id, num_of_friend)
     if friends == None:
         return None
     all_apps = {}
@@ -164,7 +193,10 @@ def generate_IR_training_data(steam_id):
         for i in range(total_num_of_genres_ids):
             xt_app.append(0)
         for app_genres in app_detail:
-            genres_id = app_genres['id']
+            try:
+                genres_id = app_genres['id']
+            except:
+                continue
             pos = G.get_genres_index(genres_id, 1)
             if pos >= 0:
                 xt_app[pos] = 1
@@ -246,7 +278,7 @@ def bitvecToList(bitvec, n):
 # Test Purpose
 if __name__=="__main__":
     generate_recommended_game_info_threaded(my_steam_id)
-    print get_recommended_game_info()
+    #print get_recommended_game_info()
     #get_trending_games_played_by_friends(my_steam_id, 40)
     #print recommend_games(my_steam_id)
     #print get_trending_games_played_by_friends(my_steam_id, 5)
