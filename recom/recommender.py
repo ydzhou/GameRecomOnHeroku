@@ -71,7 +71,7 @@ def recommend_games(steam_id):
     
     recom_apps = []
     
-    [xt, yt] = generate_IR_training_data(steam_id)
+    [xt, yt] = generate_IR_training_data(steam_id, 30)
     
     if xt == None or yt == None:
         print "ERROR: Failed to generate IR training data\n"
@@ -96,7 +96,7 @@ def recommend_games(steam_id):
         print "WARNING: User ownes 0 games\n"
         return recom_apps
     tstart = datetime.datetime.now()
-    trending_apps = get_trending_games_played_by_friends(steam_id, 20)
+    trending_apps = get_trending_games_played_by_friends(steam_id, 10)
     print datetime.datetime.now() - tstart
     
     if trending_apps == None:
@@ -170,7 +170,7 @@ def get_trending_games_played_by_friends(steam_id, num_of_friend):
     res = [a[0] for a in sorted_all_apps]
     return res
     
-def generate_IR_training_data(steam_id):
+def generate_IR_training_data(steam_id, num_of_games):
     xt = [] # input vector for training
     yt = [] # target vector for training
 
@@ -185,8 +185,12 @@ def generate_IR_training_data(steam_id):
     
     # sum up playtime of all the apps with same genres pattern
     app_info_re = {}
-    
+    i = 0
     for app in app_info:
+        if i == num_of_games:
+            break
+        else:
+            i += 1
         app_id = app[0]
         app_detail = app[3]
         xt_app = []
