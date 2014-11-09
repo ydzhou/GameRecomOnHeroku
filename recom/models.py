@@ -18,6 +18,8 @@ class App(models.Model):
     release_date = models.CharField(max_length=50, default='NA')
     #categories = models.TextField(default='NA')
     url = models.TextField(default='NA')
+    class Meta:
+        managed = True
     def __unicode__(self):
         return self.appid
     
@@ -27,6 +29,8 @@ class User(models.Model):
     #last_update = models.DateField(default=None)
     friend = models.ManyToManyField('self')
     recom_apps = models.TextField(default='[-1]')
+    class Meta:
+        managed = True
     def __unicode__(self):
         return self.steam_id
     
@@ -35,3 +39,5 @@ class UserOwnedGames(models.Model):
     appid = models.CharField(max_length=20, default='')
     playtime = models.IntegerField(default=0)
     playtime_2weeks = models.IntegerField(default=0)
+    class Meta:
+        managed = True
