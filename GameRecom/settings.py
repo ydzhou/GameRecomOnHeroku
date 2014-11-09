@@ -81,10 +81,10 @@ STATIC_URL = '/static/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-        'NAME': 'd6f35h0pv5jeeu',                     
-        'USER': 'gtintnfvhjqlry',
-        'PASSWORD': 'j1tr4c2Cm4y5ZfLLZM0RSA6uWv',
-        'HOST': 'ec2-54-83-9-127.compute-1.amazonaws.com',
+        'NAME': 'd7cmng2qq648oa',                     
+        'USER': 'vxplshkgunzkzv',
+        'PASSWORD': 'RBRIpCnh21U1sEyF339V2E-hRL',
+        'HOST': 'ec2-54-83-196-7.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
