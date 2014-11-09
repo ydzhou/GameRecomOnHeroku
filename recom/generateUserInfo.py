@@ -47,7 +47,6 @@ def get_user_info_genres_based(steam_id, num_of_games):
             continue
         u.append(app_detail)
         res.append(u)
-    print res
     return res
 
 def get_friends(steam_id):
