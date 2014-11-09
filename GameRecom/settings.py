@@ -81,9 +81,9 @@ STATIC_URL = '/static/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-        'NAME': 'd7cmng2qq648oa',                     
-        'USER': 'vxplshkgunzkzv',
-        'PASSWORD': 'RBRIpCnh21U1sEyF339V2E-hRL',
+        'NAME': 'dvo246dkpap07',                     
+        'USER': 'wpfnoqybhlmodm',
+        'PASSWORD': 'LdbEcQQMo6PS2EAuml7tQv3Aso',
         'HOST': 'ec2-54-83-196-7.compute-1.amazonaws.com',
         'PORT': '5432',
     }
