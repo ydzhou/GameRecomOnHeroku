@@ -21,5 +21,4 @@ People only spend time on things they love to do. When your friends play hundred
 It's not water, buddy.
 
 * Give me some spec on this application.
-It uses Supported Vector Machine for mapping retrieved feature information of corresponding game to the extent that user love this game. Information is retrieved via Steam web API.
-Django is used to construct this web application.
+It is deployed on Heroku and backed by Heroku Postgres Database. Please check the repo `GameRecommendApp` for more details.
