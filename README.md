@@ -3,7 +3,7 @@ GameRecommendApp
 
 A missing game recommender for Steam users who have suffered a long painful way to find a new and awesome game, in the flood of biased and exaggerated comments and recommendations online.
 
-Website: https://gamesyoumiss.herokuapp.com/recom/
+Website: http://gamesyoumiss.herokuapp.com/recom/
 
 FAQ
 ===
